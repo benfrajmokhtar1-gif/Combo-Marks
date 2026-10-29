@@ -71,18 +71,20 @@ public class ComboMarks implements ModInitializer {
                             1, 0.2, 0.2, 0.2, 0.0);
 
                     for (Entity nearby : world.getOtherEntities(livingTarget,
-                            livingTarget.getBoundingBox().expand(3.5),
-                            entity -> entity instanceof HostileEntity && entity.isAlive())) {
-                        Vec3d away = nearby.getPos().subtract(livingTarget.getPos());
-                        if (away.lengthSquared() > 0.001) {
-                            nearby.takeKnockback(1.15, away.x, away.z);
+                    livingTarget.getBoundingBox().expand(3.5),
+                    entity -> entity instanceof HostileEntity && entity.isAlive())) {
+                    Vec3d away = nearby.getPos().subtract(livingTarget.getPos());
+                    if (away.lengthSquared() > 0.001) {
+                        if (nearby instanceof LivingEntity living) {
+                            living.takeKnockback(1.15, away.x, away.z);
                         }
                     }
-                    COMBOS.remove(key);
                 }
+                COMBOS.remove(key);
             }
+        }
 
-            return ActionResult.PASS;
-        });
-    }
+        return ActionResult.PASS;
+    });
+}
 }
